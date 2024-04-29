@@ -1,0 +1,7 @@
+.search-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 30px;
+    padding: 20px;
+}
