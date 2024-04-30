@@ -9,6 +9,16 @@
     margin-top: 20px;
 }
 
+.task-details {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.span-details {
+    font-weight: 700;
+}
+
 .task-footer {
     display: flex;
     flex-direction: row;

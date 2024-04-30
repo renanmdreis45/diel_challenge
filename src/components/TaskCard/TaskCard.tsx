@@ -27,7 +27,15 @@ export function TaskCard({task}: ITaskCard) {
                     <h2>{task.title}</h2>
                 </div>
                 <div className="task-description">
-                    <p>Descrição: {task.description}</p>
+                    <p> <span className="span-details">Descrição: </span>{task.description}</p>
+                </div>
+                <div className="task-details">
+                    <div>
+                        <p> <span className="span-details">Duração: </span>{task.duration}</p>
+                    </div>
+                    <div>
+                        <p> <span className="span-details">Data de Início: </span>{task.date}</p>
+                    </div>
                 </div>
                 <div className="task-footer">
                     <Button type="primary" onClick={() => setShowModal(true)}> Editar </Button>
