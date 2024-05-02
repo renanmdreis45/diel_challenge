@@ -3,7 +3,8 @@ import { Button} from "antd";
 import './TaskCard.css';
 import { ITask } from "../../interfaces/task";
 import { TaskForm } from "../TaskForm/TaskForm";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { MyAppContext } from "../../context/TaskContext";
 
 interface ITaskCard {
     task: ITask;
@@ -14,14 +15,12 @@ interface ITaskCard {
 export function TaskCard({task}: ITaskCard) {
 
     const [showModal, setShowModal] = useState<boolean>(false);
+    const {removeTask} = useContext(MyAppContext);
 
-    const saveTask = (task: ITask) => {
-        console.log(task);
-    }
 
     return (
         <>
-            <TaskForm isNew = {false} showModal = {showModal} closeModal={() => setShowModal(false)} selectedTask={task} saveTask={() => saveTask(task)}/>
+            <TaskForm isNew = {false} showModal = {showModal} closeModal={() => setShowModal(false)} selectedTask={task} />
             <div className="task-card">
                 <div className="task-title">
                     <h2>{task.title}</h2>
@@ -39,7 +38,7 @@ export function TaskCard({task}: ITaskCard) {
                 </div>
                 <div className="task-footer">
                     <Button type="primary" onClick={() => setShowModal(true)}> Editar </Button>
-                    <Button type="primary" danger> Remover </Button>
+                    <Button type="primary" onClick={() => removeTask(task.id)} danger> Remover </Button>
                 </div>
             </div>
         </>

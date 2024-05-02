@@ -1,18 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { Modal, Form, Button, CloseButton} from 'react-bootstrap';
 import { ITask } from '../../interfaces/task';
 import { DatePicker, TimePicker } from 'antd';
+import { MyAppContext } from '../../context/TaskContext';
 
 export interface ITaskForm {
     selectedTask?: ITask;
     closeModal: VoidFunction;
     isNew: boolean;
     showModal: boolean;
-    saveTask: (task: ITask) => void;
 }
 
 export const TaskForm = (props: ITaskForm) => {
-    let {selectedTask, closeModal, isNew, showModal, saveTask} = props;
+    let {selectedTask, closeModal, isNew, showModal} = props;
+    const [date, setDate] = useState("");
+    const { addTask, updateTask} = useContext(MyAppContext);
+
 
     const [task, setTask] = useState<ITask>({
         id: '',
@@ -36,9 +39,13 @@ export const TaskForm = (props: ITaskForm) => {
 
 
 
-    const handleSubmitCard = (task: ITask) => {
+    const handleSubmitCard = async (task: ITask) => {
         
-        saveTask(task)
+        if(!isNew) {
+          await updateTask(task.id, task);
+        } else {
+          await addTask(task);
+        }
         
         setTask({
             id: '',
@@ -52,7 +59,18 @@ export const TaskForm = (props: ITaskForm) => {
 
     }
 
-    const format = 'HH:mm';
+    function changeDate(date: any, dateString: any) {
+        setDate(dateString);
+        setTask({...task, date: `${dateString}`});
+    }
+
+    function changeTime(value: any, timeString: any) {
+      setTask({...task, date:`${date} ${timeString}`})
+    }
+
+    const timeFormat = 'HH:mm';
+
+
 
 
 
@@ -103,14 +121,14 @@ export const TaskForm = (props: ITaskForm) => {
             >
               <Form.Label> Data </Form.Label>
             </Form.Group>
-            <DatePicker />
+            <DatePicker onChange={changeDate}/>
             <Form.Group
               className="mt-3 mb-2"
               controlId="date"
             >
               <Form.Label> Horário </Form.Label>
             </Form.Group>
-            <TimePicker format={format}/>
+            <TimePicker format={timeFormat} onChange={changeTime}/>
           </Form>
         </Modal.Body>
         <Modal.Footer>
